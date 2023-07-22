@@ -26,10 +26,10 @@ def checkpointable(f):
             flat_inputs = nest.flatten(args) + nest.flatten(list(kwargs.values()))
             flat_inputs = [x for x in flat_inputs if tf.is_tensor(x)]
             flat_inputs = [x for x in flat_inputs if x.dtype == tf.float32]
-            unique_inputs = [x.deref() for x in set(x.experimental_ref() for x in flat_inputs)]
+            unique_inputs = [x.deref() for x in set(x.ref() for x in flat_inputs)]
 
             unique_vars = [
-                v.deref() for v in set(v.experimental_ref() for v in _watch_vars)
+                v.deref() for v in set(v.ref() for v in _watch_vars)
                 if not any(v is inp for inp in flat_inputs)
             ]
 
